@@ -5,6 +5,7 @@
  */
 package attendancemanagementsystem;
 
+import attendancemanagementsystem.Database.JConnection;
 import java.sql.Connection;
 
 /**
@@ -16,8 +17,7 @@ public class StartupInterface extends javax.swing.JFrame {
    
     public StartupInterface() {
         initComponents();
-        
-        
+        conn=JConnection.connectdb();
     }
 
     /**

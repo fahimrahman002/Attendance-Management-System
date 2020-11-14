@@ -3,13 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Netbeans%20Projects/AttendanceManagementSystem/src/attendancemanagementsystem/Database/JConnection.java</file>
-            <file>file:/D:/Netbeans%20Projects/AttendanceManagementSystem/src/attendancemanagementsystem/StudentDashboard.java</file>
-            <file>file:/D:/Netbeans%20Projects/AttendanceManagementSystem/src/attendancemanagementsystem/AdminDashboard.java</file>
-            <file>file:/D:/Netbeans%20Projects/AttendanceManagementSystem/src/attendancemanagementsystem/StartupInterface.java</file>
-            <file>file:/D:/Netbeans%20Projects/AttendanceManagementSystem/src/attendancemanagementsystem/AdminLoginForm.java</file>
-            <file>file:/D:/Netbeans%20Projects/AttendanceManagementSystem/src/attendancemanagementsystem/StudentLoginForm.java</file>
-            <file>file:/D:/Netbeans%20Projects/AttendanceManagementSystem/src/attendancemanagementsystem/Database/DB_Connection.java</file>
+            <file>file:/D:/Github%20projects/Java%20Swing/Attendance-Management-System/src/attendancemanagementsystem/AdminDashboard.java</file>
+            <file>file:/D:/Github%20projects/Java%20Swing/Attendance-Management-System/src/attendancemanagementsystem/StudentDashboard.java</file>
+            <file>file:/D:/Github%20projects/Java%20Swing/Attendance-Management-System/src/attendancemanagementsystem/Database/Accounts.java</file>
+            <file>file:/D:/Github%20projects/Java%20Swing/Attendance-Management-System/src/attendancemanagementsystem/StartupInterface.java</file>
+            <file>file:/D:/Github%20projects/Java%20Swing/Attendance-Management-System/src/attendancemanagementsystem/StudentLoginForm.java</file>
+            <file>file:/D:/Github%20projects/Java%20Swing/Attendance-Management-System/src/attendancemanagementsystem/AdminLoginForm.java</file>
         </group>
     </open-files>
 </project-private>

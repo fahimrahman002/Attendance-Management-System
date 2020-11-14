@@ -5,17 +5,28 @@
  */
 package attendancemanagementsystem;
 
+import attendancemanagementsystem.Database.Accounts;
+import com.sun.jdi.connect.spi.Connection;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 /**
  *
  * @author fahim
  */
 public class AdminLoginForm extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AdminLoginForm
-     */
+    Connection conn;
+    Accounts account;
+
     public AdminLoginForm() {
         initComponents();
+    }
+
+    public AdminLoginForm(Connection conn) {
+        initComponents();
+        this.conn = conn;
+        account = new Accounts((java.sql.Connection) conn);
     }
 
     /**
@@ -33,7 +44,8 @@ public class AdminLoginForm extends javax.swing.JFrame {
         passwordTextField = new javax.swing.JTextField();
         usernameTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        loginButton = new javax.swing.JButton();
+        backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -44,14 +56,34 @@ public class AdminLoginForm extends javax.swing.JFrame {
         jLabel2.setText("Password");
 
         passwordTextField.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        passwordTextField.setText("admin");
+        passwordTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordTextFieldActionPerformed(evt);
+            }
+        });
 
         usernameTextField.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        usernameTextField.setText("admin");
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel3.setText("Admin Login Panel");
 
-        jButton1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jButton1.setText("Login");
+        loginButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        loginButton.setText("Login");
+        loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                loginButtonMouseClicked(evt);
+            }
+        });
+
+        backButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        backButton.setText("< Back");
+        backButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                backButtonMousePressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -69,18 +101,22 @@ public class AdminLoginForm extends javax.swing.JFrame {
                             .addComponent(usernameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(passwordTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(174, 174, 174)
+                        .addGap(57, 57, 57)
+                        .addComponent(backButton)
+                        .addGap(28, 28, 28)
                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(137, 137, 137)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(116, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(backButton))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -92,7 +128,7 @@ public class AdminLoginForm extends javax.swing.JFrame {
                         .addGap(26, 26, 26)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(loginButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(60, Short.MAX_VALUE))
         );
 
@@ -110,6 +146,40 @@ public class AdminLoginForm extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void backButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backButtonMousePressed
+        new StartupInterface().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_backButtonMousePressed
+
+    private void loginButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_loginButtonMouseClicked
+        boolean userValid = false;
+        final JPanel panel = new JPanel();
+        String username=usernameTextField.getText();
+        String pass=passwordTextField.getText();
+        try {
+            System.out.println(username+" "+pass);
+            if (!username.equals("")|| !pass.equals("")) {
+                userValid = account.adminLogin(usernameTextField.getText(), passwordTextField.getText());
+                System.out.println(userValid);
+            } else {
+                JOptionPane.showMessageDialog(panel, "User not valid", "Warning", JOptionPane.WARNING_MESSAGE);
+            }
+            if (userValid) {
+                new AdminDashboard().setVisible(true);
+            } else {
+
+            }
+            
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+    }//GEN-LAST:event_loginButtonMouseClicked
+
+    private void passwordTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordTextFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -147,11 +217,12 @@ public class AdminLoginForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton backButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton loginButton;
     private javax.swing.JTextField passwordTextField;
     private javax.swing.JTextField usernameTextField;
     // End of variables declaration//GEN-END:variables
