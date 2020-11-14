@@ -5,19 +5,23 @@
  */
 package attendancemanagementsystem;
 
+import attendancemanagementsystem.Admin.AdminLoginForm;
 import attendancemanagementsystem.Database.JConnection;
+import attendancemanagementsystem.Student.StudentLoginForm;
 import java.sql.Connection;
 
-/**
- *
- * @author fahim
- */
 public class StartupInterface extends javax.swing.JFrame {
+
     public Connection conn = null;
-   
+
     public StartupInterface() {
         initComponents();
-        conn=JConnection.connectdb();
+        conn = JConnection.connectdb();
+    }
+
+    public StartupInterface(Connection conn) {
+        initComponents();
+        this.conn = conn;
     }
 
     /**
@@ -89,20 +93,20 @@ public class StartupInterface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void studentButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_studentButtonMouseClicked
-        
+
     }//GEN-LAST:event_studentButtonMouseClicked
 
     private void adminButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminButtonMouseClicked
-        
+
     }//GEN-LAST:event_adminButtonMouseClicked
 
     private void studentButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_studentButtonMousePressed
-        new StudentLoginForm().setVisible(true);
+        new StudentLoginForm((java.sql.Connection) conn).setVisible(true);
         dispose();
     }//GEN-LAST:event_studentButtonMousePressed
 
     private void adminButtonMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminButtonMousePressed
-        new AdminLoginForm().setVisible(true);
+        new AdminLoginForm((java.sql.Connection) conn).setVisible(true);
         dispose();
     }//GEN-LAST:event_adminButtonMousePressed
 

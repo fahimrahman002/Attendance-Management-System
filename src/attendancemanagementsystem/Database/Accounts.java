@@ -5,7 +5,6 @@
  */
 package attendancemanagementsystem.Database;
 
-import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,38 +27,41 @@ public class Accounts {
         this.conn = conn;
     }
 
-    public boolean userLogin(String id, String pass) {
+    public StudentDatabase studentLogin(String id, String pass) {
         final JPanel panel = new JPanel();
-        String sql = "select id from 'admin_data' where id=\'" + id + "\' and pass=\'" + pass + "\'";
+
+        String sql = "select name,id,pass,email,phone,address,blood_group from student_data where id=\'" + id + "\' and pass=\'" + pass + "\'";
         try {
             st = (Statement) conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             rs = st.executeQuery(sql);
             if (rs.next()) {
-                return true;
+                return new StudentDatabase(conn, rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), rs.getString(7));
             } else {
                 JOptionPane.showMessageDialog(panel, "User not valid", "Warning", JOptionPane.WARNING_MESSAGE);
-                return false;
-            }
-        } catch (HeadlessException | SQLException e) {
-            JOptionPane.showMessageDialog(panel, "Database Error", "Warning", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-    }
-    public boolean adminLogin(String username, String pass) {
-        final JPanel panel = new JPanel();
-        String sql = "select username from admin_data where username=\'" + username + "\' and pass=\'" + pass + "\'";
-        try {
-            st = (Statement) conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            rs = st.executeQuery(sql);
-            if (rs.next()) {
-                return true;
-            } else {
-                JOptionPane.showMessageDialog(panel, "User not valid", "Warning", JOptionPane.WARNING_MESSAGE);
-                return false;
+                return null;
             }
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(panel, "Database Error", "Warning", JOptionPane.WARNING_MESSAGE);
-            return false;
+            return null;
+        }
+    }
+
+    public AdminDatabase adminLogin(String username, String pass) {
+        final JPanel panel = new JPanel();
+
+        String sql = "select name,username,pass,email,phone from admin_data where username=\'" + username + "\' and pass=\'" + pass + "\'";
+        try {
+            st = (Statement) conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            rs = st.executeQuery(sql);
+            if (rs.next()) {
+                return new AdminDatabase(conn, rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5));
+            } else {
+                JOptionPane.showMessageDialog(panel, "User not valid", "Warning", JOptionPane.WARNING_MESSAGE);
+                return null;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(panel, "Database Error", "Warning", JOptionPane.WARNING_MESSAGE);
+            return null;
         }
     }
 

@@ -24,7 +24,7 @@ public class JConnection {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection connection = DriverManager.getConnection(url + dbName, username, pass);
-//            System.out.println("Connected");
+            System.out.println("Connected");
             return connection;
         } catch (ClassNotFoundException | SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Connection failed");
