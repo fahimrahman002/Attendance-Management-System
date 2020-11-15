@@ -9,6 +9,7 @@ import attendancemanagementsystem.Database.StudentDatabase;
 import java.sql.Connection;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -33,6 +34,22 @@ public class StudentDashboard extends javax.swing.JFrame {
         getStudentProfile();
     }
 //----------------------------Custom methods starts-------------------------//
+
+    private void getAttendance(int month) {
+        boolean[] attendance = studentDatabase.getAttendance(month);
+        DefaultTableModel dtm = (DefaultTableModel) attendanceTable.getModel();
+        dtm.setRowCount(0);
+        Object[] row = new Object[2];
+        for (int i = 1; i <= 30; i++) {
+            row[0] = "Day " + (i);
+            if (attendance[i] == true) {
+                row[1] = "Present";
+            } else {
+                row[1] = "Absent";
+            }
+            dtm.addRow(row);
+        }
+    }
 
     private void initialSetup() {
         submitUpdateButton.setVisible(false);
@@ -108,40 +125,56 @@ public class StudentDashboard extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         studentAttendanceTab = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        studentTable = new javax.swing.JTable();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        attendanceTable = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
-        giveAttendanceButton = new javax.swing.JButton();
-        giveAttendanceButton1 = new javax.swing.JButton();
+        showAttendanceButton = new javax.swing.JButton();
+        jMonthChooser = new com.toedter.calendar.JMonthChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
+
+        Profile.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         adminProfileLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         adminProfileLabel.setText("Student Profile");
+        Profile.add(adminProfileLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(456, 0, 261, 48));
 
         studentIdLabel.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         studentIdLabel.setText("Login Id");
+        Profile.add(studentIdLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 99, 120, 29));
 
         studentIdTextField.setEditable(false);
         studentIdTextField.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        Profile.add(studentIdTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(528, 91, 280, 33));
 
         nameLabel.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         nameLabel.setText("Name");
+        Profile.add(nameLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 146, 120, 29));
 
         studentNameTextField.setEditable(false);
         studentNameTextField.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        Profile.add(studentNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(528, 142, 280, 33));
 
         phoneLabel.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         phoneLabel.setText("Phone");
+        Profile.add(phoneLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 250, 120, 29));
 
         studentPhoneTextField.setEditable(false);
         studentPhoneTextField.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        Profile.add(studentPhoneTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 250, 280, 33));
 
         emailLabel.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         emailLabel.setText("Email");
+        Profile.add(emailLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 190, 120, 29));
 
         studentEmailTextField.setEditable(false);
         studentEmailTextField.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        studentEmailTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentEmailTextFieldActionPerformed(evt);
+            }
+        });
+        Profile.add(studentEmailTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 190, 280, 33));
 
         updateProfileButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         updateProfileButton.setText("Update Profile");
@@ -150,6 +183,7 @@ public class StudentDashboard extends javax.swing.JFrame {
                 updateProfileButtonMouseClicked(evt);
             }
         });
+        Profile.add(updateProfileButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(508, 615, 173, -1));
 
         submitUpdateButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         submitUpdateButton.setText("Submit Update");
@@ -163,25 +197,33 @@ public class StudentDashboard extends javax.swing.JFrame {
                 submitUpdateButtonActionPerformed(evt);
             }
         });
+        Profile.add(submitUpdateButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(508, 667, 173, -1));
 
         phoneLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         phoneLabel1.setText("Confirm Password");
+        Profile.add(phoneLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(341, 560, -1, 29));
 
         emailLabel1.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         emailLabel1.setText("New Password");
+        Profile.add(emailLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(341, 508, 212, 29));
 
         studentNewPassField.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        Profile.add(studentNewPassField, new org.netbeans.lib.awtextra.AbsoluteConstraints(582, 504, 262, 40));
 
         studentConfirmPassField.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        Profile.add(studentConfirmPassField, new org.netbeans.lib.awtextra.AbsoluteConstraints(582, 556, 263, 40));
 
         phoneLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         phoneLabel2.setText("Blood Group");
+        Profile.add(phoneLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 440, 157, 29));
 
         emailLabel2.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         emailLabel2.setText("Address");
+        Profile.add(emailLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 320, 120, 29));
 
         studentBloodGroup.setEditable(false);
         studentBloodGroup.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        Profile.add(studentBloodGroup, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 440, 81, 33));
 
         studentAddress.setEditable(false);
         studentAddress.setColumns(20);
@@ -189,9 +231,12 @@ public class StudentDashboard extends javax.swing.JFrame {
         studentAddress.setRows(5);
         jScrollPane2.setViewportView(studentAddress);
 
+        Profile.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 310, 280, 90));
+
         confirmPassLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         confirmPassLabel.setForeground(new java.awt.Color(255, 0, 51));
         confirmPassLabel.setText("* You have to confirm your password");
+        Profile.add(confirmPassLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(863, 557, 312, 40));
 
         jButton1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jButton1.setText("Logout");
@@ -200,126 +245,23 @@ public class StudentDashboard extends javax.swing.JFrame {
                 jButton1MouseClicked(evt);
             }
         });
-
-        javax.swing.GroupLayout ProfileLayout = new javax.swing.GroupLayout(Profile);
-        Profile.setLayout(ProfileLayout);
-        ProfileLayout.setHorizontalGroup(
-            ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ProfileLayout.createSequentialGroup()
-                .addGap(341, 341, 341)
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ProfileLayout.createSequentialGroup()
-                        .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(ProfileLayout.createSequentialGroup()
-                                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(phoneLabel1)
-                                    .addComponent(emailLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(29, 29, 29)
-                                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(ProfileLayout.createSequentialGroup()
-                                        .addComponent(studentConfirmPassField, javax.swing.GroupLayout.PREFERRED_SIZE, 263, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(confirmPassLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(studentNewPassField, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(ProfileLayout.createSequentialGroup()
-                                .addGap(167, 167, 167)
-                                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(submitUpdateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(updateProfileButton, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(ProfileLayout.createSequentialGroup()
-                                .addComponent(phoneLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addComponent(studentBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(ProfileLayout.createSequentialGroup()
-                                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(emailLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(phoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(studentIdLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(67, 67, 67)
-                                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(studentIdTextField)
-                                    .addComponent(studentNameTextField)
-                                    .addComponent(studentEmailTextField)
-                                    .addComponent(studentPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(ProfileLayout.createSequentialGroup()
-                                .addComponent(emailLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(67, 67, 67)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addContainerGap(69, Short.MAX_VALUE))
-                    .addGroup(ProfileLayout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(adminProfileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 261, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(93, 93, 93))))
-        );
-        ProfileLayout.setVerticalGroup(
-            ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(ProfileLayout.createSequentialGroup()
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(adminProfileLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
-                .addGap(40, 40, 40)
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(studentIdLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(studentIdTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(studentNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(emailLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(studentEmailTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 34, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(studentPhoneTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(ProfileLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(emailLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(ProfileLayout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phoneLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(studentBloodGroup, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(emailLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(studentNewPassField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(ProfileLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(phoneLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(studentConfirmPassField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(confirmPassLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(updateProfileButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(submitUpdateButton)
-                .addGap(38, 38, 38))
-        );
+        Profile.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(1019, 11, 132, -1));
 
         jTabbedPane1.addTab("Profile", Profile);
 
-        studentTable.setModel(new javax.swing.table.DefaultTableModel(
+        attendanceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+
             },
             new String [] {
-                "Student ID", "Name", "Email", "Phone"
+                "Day", "Attendance"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -330,16 +272,29 @@ public class StudentDashboard extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(studentTable);
+        jScrollPane1.setViewportView(attendanceTable);
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel3.setText("Attendance Date");
+        jLabel3.setText("Attendance Month");
 
-        giveAttendanceButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        giveAttendanceButton.setText("Update Attendance");
+        showAttendanceButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        showAttendanceButton.setText("Show Attendance");
+        showAttendanceButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showAttendanceButtonMouseClicked(evt);
+            }
+        });
 
-        giveAttendanceButton1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        giveAttendanceButton1.setText("Give Attendance");
+        jMonthChooser.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jMonthChooserFocusGained(evt);
+            }
+        });
+        jMonthChooser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jMonthChooserPropertyChange(evt);
+            }
+        });
 
         javax.swing.GroupLayout studentAttendanceTabLayout = new javax.swing.GroupLayout(studentAttendanceTab);
         studentAttendanceTab.setLayout(studentAttendanceTabLayout);
@@ -347,34 +302,29 @@ public class StudentDashboard extends javax.swing.JFrame {
             studentAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(studentAttendanceTabLayout.createSequentialGroup()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(studentAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(studentAttendanceTabLayout.createSequentialGroup()
-                        .addGroup(studentAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 50, Short.MAX_VALUE))
+                        .addGap(44, 44, 44)
+                        .addComponent(jMonthChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(studentAttendanceTabLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
                         .addGroup(studentAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(giveAttendanceButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(giveAttendanceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(showAttendanceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(34, Short.MAX_VALUE))))
         );
         studentAttendanceTabLayout.setVerticalGroup(
             studentAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(studentAttendanceTabLayout.createSequentialGroup()
-                .addGroup(studentAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(studentAttendanceTabLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75)
-                        .addComponent(giveAttendanceButton1)
-                        .addGap(38, 38, 38)
-                        .addComponent(giveAttendanceButton)))
-                .addGap(0, 154, Short.MAX_VALUE))
+                .addGap(31, 31, 31)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jMonthChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(67, 67, 67)
+                .addComponent(showAttendanceButton)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 745, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("My Attendance", studentAttendanceTab);
@@ -436,6 +386,22 @@ public class StudentDashboard extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jButton1MouseClicked
 
+    private void showAttendanceButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showAttendanceButtonMouseClicked
+        getAttendance(jMonthChooser.getMonth() + 1);
+    }//GEN-LAST:event_showAttendanceButtonMouseClicked
+
+    private void jMonthChooserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jMonthChooserPropertyChange
+
+    }//GEN-LAST:event_jMonthChooserPropertyChange
+
+    private void jMonthChooserFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jMonthChooserFocusGained
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMonthChooserFocusGained
+
+    private void studentEmailTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentEmailTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_studentEmailTextFieldActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -474,15 +440,14 @@ public class StudentDashboard extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Profile;
     private javax.swing.JLabel adminProfileLabel;
+    private javax.swing.JTable attendanceTable;
     private javax.swing.JLabel confirmPassLabel;
     private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel emailLabel1;
     private javax.swing.JLabel emailLabel2;
-    private javax.swing.JButton giveAttendanceButton;
-    private javax.swing.JButton giveAttendanceButton1;
     private javax.swing.JButton jButton1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel3;
+    private com.toedter.calendar.JMonthChooser jMonthChooser;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
@@ -490,6 +455,7 @@ public class StudentDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel phoneLabel;
     private javax.swing.JLabel phoneLabel1;
     private javax.swing.JLabel phoneLabel2;
+    private javax.swing.JButton showAttendanceButton;
     private javax.swing.JTextArea studentAddress;
     private javax.swing.JPanel studentAttendanceTab;
     private javax.swing.JTextField studentBloodGroup;
@@ -500,7 +466,6 @@ public class StudentDashboard extends javax.swing.JFrame {
     private javax.swing.JTextField studentNameTextField;
     private javax.swing.JPasswordField studentNewPassField;
     private javax.swing.JTextField studentPhoneTextField;
-    private javax.swing.JTable studentTable;
     private javax.swing.JButton submitUpdateButton;
     private javax.swing.JButton updateProfileButton;
     // End of variables declaration//GEN-END:variables

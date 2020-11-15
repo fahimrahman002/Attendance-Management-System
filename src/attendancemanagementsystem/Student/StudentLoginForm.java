@@ -55,6 +55,11 @@ public class StudentLoginForm extends javax.swing.JFrame {
         jLabel2.setText("Password");
 
         loginIdTextFiled.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        loginIdTextFiled.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                loginIdTextFiledKeyPressed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 24)); // NOI18N
         jLabel3.setText("Student Login Panel");
@@ -81,6 +86,11 @@ public class StudentLoginForm extends javax.swing.JFrame {
         });
 
         passwordTextField.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        passwordTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                passwordTextFieldKeyPressed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -171,6 +181,10 @@ public class StudentLoginForm extends javax.swing.JFrame {
     }//GEN-LAST:event_loginButtonMouseClicked
 
     private void loginButtonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginButtonKeyPressed
+
+    }//GEN-LAST:event_loginButtonKeyPressed
+
+    private void passwordTextFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordTextFieldKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             StudentDatabase studentDatabase;
             final JPanel panel = new JPanel();
@@ -190,7 +204,11 @@ public class StudentLoginForm extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(panel, "Something went wrong", "Warning", JOptionPane.WARNING_MESSAGE);
             }
         }
-    }//GEN-LAST:event_loginButtonKeyPressed
+    }//GEN-LAST:event_passwordTextFieldKeyPressed
+
+    private void loginIdTextFiledKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_loginIdTextFiledKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_loginIdTextFiledKeyPressed
 
     /**
      * @param args the command line arguments

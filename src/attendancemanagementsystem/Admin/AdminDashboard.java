@@ -6,9 +6,12 @@
 package attendancemanagementsystem.Admin;
 
 import attendancemanagementsystem.Database.AdminDatabase;
+import attendancemanagementsystem.Database.StudentDatabase;
 import java.sql.Connection;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 public class AdminDashboard extends javax.swing.JFrame {
 
@@ -27,12 +30,39 @@ public class AdminDashboard extends javax.swing.JFrame {
         initialSetup();
         this.adminDatabase = adminDatabase;
         getAdminProfile();
+        getStudentData();
     }
 
     //----------------------------Custom methods starts-------------------------//
     private void initialSetup() {
         submitUpdateButton.setVisible(false);
         confirmPassLabel.setVisible(false);
+    }
+
+    private void getStudentData() {
+        DefaultTableModel dtm = (DefaultTableModel) studentTable.getModel();
+        dtm.setRowCount(0);
+        List<StudentDatabase> list = (List<StudentDatabase>) adminDatabase.getStudentData();
+        Object[] row = new Object[4];
+        for (int i = 0; i < list.size(); i++) {
+            row[0] = list.get(i).getStudentId();
+            row[1] = list.get(i).getStudentName();
+            row[2] = list.get(i).getStudentEmail();
+            row[3] = list.get(i).getStudentPhone();
+            dtm.addRow(row);
+        }
+    }
+
+    private void addStudentData(String studentId) {
+        DefaultTableModel dtm = (DefaultTableModel) studentTable.getModel();
+        Object[] row = new Object[4];
+
+        row[0] = studentId;
+        row[1] = "";
+        row[2] = "";
+        row[3] = "";
+        dtm.addRow(row);
+
     }
 
     private void getAdminProfile() {
@@ -93,10 +123,12 @@ public class AdminDashboard extends javax.swing.JFrame {
         studentsAttendanceTab = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         studentTable = new javax.swing.JTable();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
         jLabel3 = new javax.swing.JLabel();
+        updateAttendanceButton = new javax.swing.JButton();
         giveAttendanceButton = new javax.swing.JButton();
-        giveAttendanceButton1 = new javax.swing.JButton();
+        jDayChooser = new com.toedter.calendar.JDayChooser();
+        jLabel7 = new javax.swing.JLabel();
+        jMonthChooser = new com.toedter.calendar.JMonthChooser();
         ManageStudentAccountTab = new javax.swing.JPanel();
         createUserButton = new javax.swing.JButton();
         studentLoginIdTextFiled = new javax.swing.JTextField();
@@ -112,6 +144,7 @@ public class AdminDashboard extends javax.swing.JFrame {
         confirmPassField = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         adminProfileLabel.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         adminProfileLabel.setText("Admin Profile");
@@ -273,7 +306,7 @@ public class AdminDashboard extends javax.swing.JFrame {
 
         studentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+
             },
             new String [] {
                 "Student ID", "Name", "Email", "Phone"
@@ -297,48 +330,76 @@ public class AdminDashboard extends javax.swing.JFrame {
         jScrollPane1.setViewportView(studentTable);
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel3.setText("Attendance Date");
+        jLabel3.setText("Attendance Month");
+
+        updateAttendanceButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        updateAttendanceButton.setText("Update Attendance");
+        updateAttendanceButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                updateAttendanceButtonMouseClicked(evt);
+            }
+        });
 
         giveAttendanceButton.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        giveAttendanceButton.setText("Update Attendance");
+        giveAttendanceButton.setText("Give Attendance");
+        giveAttendanceButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                giveAttendanceButtonMouseClicked(evt);
+            }
+        });
 
-        giveAttendanceButton1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        giveAttendanceButton1.setText("Give Attendance");
+        jLabel7.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        jLabel7.setText("Attendance Day");
 
         javax.swing.GroupLayout studentsAttendanceTabLayout = new javax.swing.GroupLayout(studentsAttendanceTab);
         studentsAttendanceTab.setLayout(studentsAttendanceTabLayout);
         studentsAttendanceTabLayout.setHorizontalGroup(
             studentsAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(studentsAttendanceTabLayout.createSequentialGroup()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 850, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(studentsAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(studentsAttendanceTabLayout.createSequentialGroup()
-                        .addGroup(studentsAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 33, Short.MAX_VALUE))
-                    .addGroup(studentsAttendanceTabLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(studentsAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(giveAttendanceButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(giveAttendanceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(jDayChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(studentsAttendanceTabLayout.createSequentialGroup()
+                                .addGap(31, 31, 31)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jMonthChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(studentsAttendanceTabLayout.createSequentialGroup()
+                        .addGap(75, 75, 75)
+                        .addGroup(studentsAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(updateAttendanceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(giveAttendanceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+            .addGroup(studentsAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, studentsAttendanceTabLayout.createSequentialGroup()
+                    .addContainerGap(954, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(77, 77, 77)))
         );
         studentsAttendanceTabLayout.setVerticalGroup(
             studentsAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(studentsAttendanceTabLayout.createSequentialGroup()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(studentsAttendanceTabLayout.createSequentialGroup()
+                .addGap(49, 49, 49)
+                .addComponent(jDayChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(studentsAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(studentsAttendanceTabLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75)
-                        .addComponent(giveAttendanceButton1)
-                        .addGap(38, 38, 38)
-                        .addComponent(giveAttendanceButton)))
-                .addGap(0, 168, Short.MAX_VALUE))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jMonthChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(64, 64, 64)
+                .addComponent(giveAttendanceButton)
+                .addGap(18, 18, 18)
+                .addComponent(updateAttendanceButton)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(studentsAttendanceTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(studentsAttendanceTabLayout.createSequentialGroup()
+                    .addGap(16, 16, 16)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(529, Short.MAX_VALUE)))
         );
 
         jTabbedPane1.addTab("Students", studentsAttendanceTab);
@@ -462,7 +523,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                         .addGroup(ManageStudentAccountTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(createUserButton)
                             .addComponent(deleteUserButton))))
-                .addContainerGap(359, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Manage Student Account", ManageStudentAccountTab);
@@ -478,10 +539,10 @@ public class AdminDashboard extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jTabbedPane1)
-                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 608, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0))
         );
 
         pack();
@@ -493,7 +554,9 @@ public class AdminDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_submitUpdateButtonActionPerformed
 
     private void createUserButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_createUserButtonMouseClicked
-        adminDatabase.createStudentAccount(studentLoginIdTextFiled.getText(), studentPassField.getText());
+        String studentId = studentLoginIdTextFiled.getText();
+        adminDatabase.createStudentAccount(studentId, studentPassField.getText());
+        addStudentData(studentId);
         studentLoginIdTextFiled.setText("");
         studentPassField.setText("");
     }//GEN-LAST:event_createUserButtonMouseClicked
@@ -510,14 +573,14 @@ public class AdminDashboard extends javax.swing.JFrame {
 
     private void submitUpdateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_submitUpdateButtonMouseClicked
         if (adminDatabase.getAdminPass().equals(adminConfirmPassField.getText())) {
-            String studentPass;
+            String adminPass;
             confirmPassLabel.setVisible(false);
             if (!adminNewPassField.getText().equals("")) {
-                studentPass = adminNewPassField.getText();
+                adminPass = adminNewPassField.getText();
             } else {
-                studentPass = adminDatabase.getAdminPass();
+                adminPass = adminDatabase.getAdminPass();
             }
-            boolean updateDone = adminDatabase.updateProfile(studentPass, adminUsernameTextField.getText(), adminEmailTextField.getText(), adminPhoneTextField.getText());
+            boolean updateDone = adminDatabase.updateProfile(adminPass, adminNameTextField.getText(), adminEmailTextField.getText(), adminPhoneTextField.getText());
             if (updateDone) {
                 JOptionPane.showMessageDialog(panel, "Your profile has been updated successfully", "Successful Update", JOptionPane.INFORMATION_MESSAGE);
                 updateProfileButton.setVisible(true);
@@ -535,6 +598,7 @@ public class AdminDashboard extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(panel, "Account has been deleted successfully", "Successful Delete", JOptionPane.INFORMATION_MESSAGE);
                 loginIdToDeleteTextFiled.setText("");
                 confirmPassField.setText("");
+                getStudentData();
             } else {
                 JOptionPane.showMessageDialog(panel, "Something went wrong", "Warning", JOptionPane.WARNING_MESSAGE);
             }
@@ -548,6 +612,62 @@ public class AdminDashboard extends javax.swing.JFrame {
         new AdminLoginForm(conn).setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton1MouseClicked
+
+    private void giveAttendanceButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_giveAttendanceButtonMouseClicked
+        int day = jDayChooser.getDay();
+        int month = jMonthChooser.getMonth() + 1;
+        String dayColumn;
+        DefaultTableModel dtm = (DefaultTableModel) studentTable.getModel();
+
+        String id, sql;
+        if (studentTable.getRowCount() == 0) {
+            final JPanel panel = new JPanel();
+            JOptionPane.showMessageDialog(panel, "There is no data to delete.", "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+        } else {
+            int[] rows = studentTable.getSelectedRows();
+            if (rows.length == 0) {
+                JOptionPane.showMessageDialog(panel, "No row selected.", "No selection",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                for (int i = 0; i < rows.length; i++) {
+                    id = dtm.getValueAt(rows[i], 0).toString();
+                    dayColumn = "D" + day;
+                    adminDatabase.giveAttendance(id, dayColumn, month);
+                }
+                JOptionPane.showMessageDialog(panel, "Attendance has been updated.", "No selection",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_giveAttendanceButtonMouseClicked
+
+    private void updateAttendanceButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateAttendanceButtonMouseClicked
+        int day = jDayChooser.getDay();
+        int month = jMonthChooser.getMonth() + 1;
+        String dayColumn;
+        DefaultTableModel dtm = (DefaultTableModel) studentTable.getModel();
+
+        String id, sql;
+        if (studentTable.getRowCount() == 0) {
+            final JPanel panel = new JPanel();
+            JOptionPane.showMessageDialog(panel, "There is no data to delete.", "Warning",
+                    JOptionPane.WARNING_MESSAGE);
+        } else {
+            int[] rows = studentTable.getSelectedRows();
+            if (rows.length == 0) {
+                JOptionPane.showMessageDialog(panel, "No row selected.", "No selection",
+                        JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                for (int i = 0; i < rows.length; i++) {
+                    id = dtm.getValueAt(rows[i], 0).toString();
+                    dayColumn = "D" + day;
+                    adminDatabase.giveAttendance(id, dayColumn, month);
+                }
+                JOptionPane.showMessageDialog(panel, "Attendance has been updated.", "No selection",
+                        JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_updateAttendanceButtonMouseClicked
 
     /**
      * @param args the command line arguments
@@ -602,15 +722,16 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel emailLabel;
     private javax.swing.JLabel emailLabel1;
     private javax.swing.JButton giveAttendanceButton;
-    private javax.swing.JButton giveAttendanceButton1;
     private javax.swing.JButton jButton1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
+    private com.toedter.calendar.JDayChooser jDayChooser;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private com.toedter.calendar.JMonthChooser jMonthChooser;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField loginIdToDeleteTextFiled;
@@ -622,6 +743,7 @@ public class AdminDashboard extends javax.swing.JFrame {
     private javax.swing.JTable studentTable;
     private javax.swing.JPanel studentsAttendanceTab;
     private javax.swing.JButton submitUpdateButton;
+    private javax.swing.JButton updateAttendanceButton;
     private javax.swing.JButton updateProfileButton;
     private javax.swing.JLabel usernameLabel;
     // End of variables declaration//GEN-END:variables

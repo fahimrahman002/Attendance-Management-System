@@ -7,6 +7,7 @@ package attendancemanagementsystem.Database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
@@ -19,6 +20,7 @@ public class StudentDatabase {
     private String studentName, studentId, studentPass, studentEmail, studentPhone, studentAddress, studentBloodGroup;
     private PreparedStatement pst;
     private Statement st;
+    ResultSet rs = null;
 
     public StudentDatabase() {
     }
@@ -32,6 +34,31 @@ public class StudentDatabase {
         this.studentPhone = studentPhone;
         this.studentAddress = studentAddress;
         this.studentBloodGroup = studentBloodGroup;
+    }
+
+    public StudentDatabase(String studentName, String studentId, String studentEmail, String studentPhone) {
+        this.studentName = studentName;
+        this.studentId = studentId;
+        this.studentEmail = studentEmail;
+        this.studentPhone = studentPhone;
+    }
+
+    public boolean[] getAttendance(int month) {
+        String sql = "select * from attendance where month=\'" + month + "\' and id=\'" + getStudentId() + "\'";
+        boolean[] attendance = new boolean[31];
+        try {
+            pst = conn.prepareStatement(sql);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                for (int i = 1; i <= 30; i++) {
+                    attendance[i] = rs.getBoolean("D" + i);
+                }
+            }
+            return attendance;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Can't get attendance from database.", "Warning", JOptionPane.WARNING_MESSAGE);
+        }
+        return null;
     }
 
     public boolean updateProfile(String studentPass, String studentName, String studentEmail, String studentPhone, String studentAddress, String studentBloodGroup) {
