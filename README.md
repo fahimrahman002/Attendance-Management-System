@@ -4,16 +4,17 @@
 
 git clone https://github.com/fahimrahman002/Attendance-Management-System.git
 
-## 2. Import database
+## 2. Start localhost server using xampp and goto admin panel
+
+## 3. Import database
 
 - create table named 'attendance_management_system'
 
 - Import attendance_management_system.sql file.
-- [Note: 'attendance_management_system.sql' file can be found in 'Database backup'folder]
+
+* [Note: 'attendance_management_system.sql' file can be found in 'Database backup'folder]
 
 - Import database by following [The Tutorial](https://youtu.be/jW5lrS6EUPM)
-
-## 3. Start localhost server using xampp
 
 ## 4. Open the project in netbeans ide
 
